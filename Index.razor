@@ -1,0 +1,45 @@
+﻿@page "/empleados"
+<!-- llamamos el model empleados -->
+@using BlazorCrud5.Models
+<!-- llamamos los servicios -->
+@using BlazorCrud5.Data.Services
+<!-- inyectamos los servicios -->
+@inject IEmpleadosService EmpleadosService
+
+<h3>Listado de empleados</h3>
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" 
+                PageSize="7" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@empleados" TItem="Empleado" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+    <Columns>
+        <RadzenDataGridColumn TItem="Empleado" Property="IntId" Filterable="false" Title="ID" Frozen="true" Width="70px" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Empleado" Property="IntFolio" Title="Folio" Frozen="true" Width="80px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="DatIngreso" Title="Ingreso" FormatString="{0:d}" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrStatus" Title="Status" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrNombre" Title="Nombre" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrApellido" Title="Apellido" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrEmail" Title="Email" Width="10px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrDepartamento" Title="Departamento" Width="140px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="StrFuncion" Title="Finción" Width="140px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="DatBaja" Title="Baja" FormatString="{0:d}" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Property="IntSueldo" Title="Sueldo" Width="100px" />
+        <RadzenDataGridColumn TItem="Empleado" Title="Editar" Width="140px">
+            <Template Context="Empleado">
+                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="edit" Class="m-1" Text="Editar" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Empleado" Title="Borrar" Width="140px">
+            <Template Context="Empleado">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Class="m-1" Text="Borrar" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    IEnumerable<Empleado> empleados;
+    protected override async Task OnInitializedAsync()
+    {
+        empleados = await EmpleadosService.ObtenerTodos();
+    }
+}
+
